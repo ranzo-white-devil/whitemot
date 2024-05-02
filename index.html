@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Motivational Quotes</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f4f4f4;
+      transition: background-color 0.3s ease;
+    }
+    #quote-container {
+      width: 60%;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease;
+    }
+    #quote {
+      font-size: 24px;
+      font-weight: 300;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    #quote cite {
+      display: block;
+      font-size: 16px;
+      font-style: normal;
+      color: #999;
+      margin-top: 5px;
+    }
+    #new-quote {
+      font-size: 18px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #new-quote:hover {
+      background-color: #45a049;
+    }
+    #like-button {
+      font-size: 18px;
+      padding: 10px 20px;
+      background-color: #f44336;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #like-button:hover {
+      background-color: #e53935;
+    }
+    #history-button {
+      position: fixed;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      font-size: 24px;
+      background-color: #3f51b5;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #history-button:hover {
+      background-color: #303f9f;
+    }
+    #history-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: #fff;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      transform: translateX(-100%);
+    }
+    #history-menu.open {
+      transform: translateX(0);
+    }
+    #history-menu ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    #history-menu ul li {
+      border-bottom: 1px solid #ddd;
+      padding: 10px;
+      cursor: pointer;
+    }
+    #history-menu ul li:hover {
+      background-color: #f4f4f4;
+    }
+    #history-menu #read-quote {
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #history-menu #read-quote:hover {
+      background-color: #45a049;
+    }
+    /* Dark mode styles */
+    body.dark-mode {
+      background-color: #333;
+    }
+    body.dark-mode #quote-container {
+      background-color: #444;
+    }
+    body.dark-mode #quote, body.dark-mode #quote cite {
+      color: #ddd;
+    }
+    body.dark-mode #new-quote {
+      background-color: #66bb6a;
+    }
+    body.dark-mode #new-quote:hover {
+      background-color: #5cac58;
+    }
+    body.dark-mode #like-button {
+      background-color: #f44336;
+    }
+    body.dark-mode #like-button:hover {
+      background-color: #e53935;
+    }
+    body.dark-mode #history-button {
+      background-color: #2196f3;
+    }
+    body.dark-mode #history-button:hover {
+      background-color: #1565c0;
+    }
+    body.dark-mode #history-menu {
+      background-color: #444;
+    }
+    body.dark-mode #history-menu ul li {
+      border-bottom: 1px solid #666;
+    }
+    body.dark-mode #history-menu ul li:hover {
+      background-color: #555;
+    }
+    body.dark-mode #history-menu #read-quote {
+      background-color: #4caf50;
+    }
+    body.dark-mode #history-menu #read-quote:hover {
+      background-color: #45a049;
+    }
+    /* Dark mode slider styles */
+    #dark-mode-slider {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    #dark-mode-slider input {
+      display: none;
+    }
+    #dark-mode-slider label {
+      display: block;
+      width: 60px;
+      height: 30px;
+      background-color: #ccc;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #dark-mode-slider label:before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 30px;
+      background-color: #fff;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: left 0.3s ease;
+    }
+    #dark-mode-slider input:checked + label {
+      background-color: #4caf50;
+    }
+    #dark-mode-slider input:checked + label:before {
+      left: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div id="dark-mode-slider">
+    <input type="checkbox" id="dark-mode-toggle">
+    <label for="dark-mode-toggle"></label>
+  </div>
+  <div id="history-button"></div>
+  <div id="quote-container">
+    <div id="quote"></div>
+    <cite id="author"></cite>
+    <button id="new-quote">New Quote</button>
+    <button id="like-button">Like</button>
+  </div>
+  <div id="history-menu">
+    <ul id="liked-quotes"></ul>
+    <button id="read-quote">Read Quote in Full Screen</button>
+  </div>
+
+  <script>
+    const quoteElement = document.getElementById('quote');
+    const authorElement = document.getElementById('author');
+    const newQuoteButton = document.getElementById('new-quote');
+    const likeButton = document.getElementById('like-button');
+    const historyButton = document.getElementById('history-button');
+    const historyMenu = document.getElementById('history-menu');
+    const likedQuotesList = document.getElementById('liked-quotes');
+    const readQuoteButton = document.getElementById('read-quote');
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+    let previousQuote = '';
+    let likedQuotes = [];
+
+    function getQuote() {
+      fetch('https://api.quotable.io/random')
+        .then(response => response.json())
+        .then(data => {
+          const quote = data.content;
+          const author = data.author;
+          if (quote !== previousQuote) {
+            previousQuote = quote;
+            quoteElement.textContent = quote;
+            authorElement.textContent = `- ${author}`;
+          } else {
+            getQuote();
+          }
+        })
+        .catch(error => console.error(error));
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text);
+    }
+
+    function toggleLike(quote) {
+      const index = likedQuotes.indexOf(quote);
+      if (index === -1) {
+        likedQuotes.push(quote);
+        likeButton.textContent = 'Liked';
+        renderLikedQuotes();
+      } else {
+        likedQuotes.splice(index, 1);
+        likeButton.textContent = 'Like';
+        renderLikedQuotes();
+      }
+    }
+
+    function renderLikedQuotes() {
+      likedQuotesList.innerHTML = '';
+      likedQuotes.forEach(quote => {
+        const listItem = document.createElement('li');
+        listItem.textContent = quote;
+        likedQuotesList.appendChild(listItem);
+      });
+    }
+
+    function closeMenu() {
+      historyMenu.classList.remove('open');
+    }
+
+    function readQuoteInFullScreen() {
+      const quoteContainer = document.getElementById('quote-container');
+      quoteContainer.requestFullscreen();
+    }
+
+    function toggleMenu() {
+      historyMenu.classList.toggle('open');
+    }
+
+    document.addEventListener('click', event => {
+      if (!event.target.closest('#history-menu')) {
+        closeMenu();
+      }
+    });
+
+    historyButton.addEventListener('click', toggleMenu);
+
+    getQuote();
+
+    newQuoteButton.addEventListener('click', getQuote);
+
+    likeButton.addEventListener('click', () => {
+      const quote = `${quoteElement.textContent} - ${authorElement.textContent}`;
+      toggleLike(quote);
+      copyToClipboard(quote);
+    });
+
+    readQuoteButton.addEventListener('click', readQuoteInFullScreen);
+
+    darkModeToggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+  </script>
+</body>
+</html>
